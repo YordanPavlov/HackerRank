@@ -4,19 +4,16 @@
 using namespace std;
 
 vector<string> split_string(string);
-int nodeIds = 0;
 
 /**
  *  Node inside the trie
  */
 struct Node {
-    Node(int _id, char _ch)
-        :
-          id(_id),
-          chValue(_ch)
+    Node(char _ch)
+    :
+    chValue(_ch)
     {}
 
-    int id;
     bool isDictionaryNode = false;
     char chValue;
     std::map<char, unique_ptr<Node>> children;
@@ -26,7 +23,7 @@ struct Node {
     std::vector<unsigned> indexes;
 };
 
-Node rootNode(nodeIds, ' ');
+Node rootNode(' ');
 
 std::deque<Node*> frontTraverse;
 void buildBlueLinks() {
@@ -95,7 +92,7 @@ void buildTrie(vector<string>& genes, vector<int>& health)
         for(char ch : curGene) {
             std::unique_ptr<Node>& nextNode = curNode->children[ch];
             if(nullptr == nextNode.get()) {
-                nextNode.reset(new Node(++nodeIds, ch));
+                nextNode.reset(new Node(ch));
                 nextNode->parent = curNode;
             }
             curNode = nextNode.get();
